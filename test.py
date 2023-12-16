@@ -2,8 +2,7 @@ import os
 
 
 def tokenizer():
-    from transformers import PreTrainedTokenizerFast
-    tokenizer = PreTrainedTokenizerFast(tokenizer_file='./cache/tokenizer.json')
+    from tokenizer import encode, decode
 
     test_string = '''\
 1-9|4+9|5+9|11/64
@@ -15,16 +14,23 @@ def tokenizer():
 5+0|1/12
 9-8|4+8|5+8|3/25
 4+0|1/64
-5+0|0/1\
+5+0|0/1
+<EOS>
+1-9|4+9|5+9|11/64
+4+0|5+0|1/48
+4-0|5/64
+1+9|4+9|5+8|1/8
+0+0|1/64
+<EOS>
 '''
 
     print(test_string)
     print('------------------------------')
-    encoded = tokenizer.encode(test_string)
+    encoded = encode(test_string)
     print(encoded)
     print('------------------------------')
 
-    decoded = "".join(tokenizer.convert_ids_to_tokens(encoded))
+    decoded = decode(encoded)
     print(decoded)
 
     assert test_string == decoded
