@@ -81,6 +81,18 @@ def main_make_tokenizer(args):
     bpe_model.save('./cache/tokenizer.json')
 
 
+def make_train_bin(subparsers):
+    parser = subparsers.add_parser('make_train_bin', help='Make train bin')
+
+    parser.set_defaults(func=main_make_train_bin)
+
+def main_make_train_bin(args):
+    from train_data import make_train_bin
+
+    make_train_bin()
+
+
+
 # Example usage
 if __name__ == "__main__":
     main_parser = argparse.ArgumentParser(description='Main parser')
@@ -90,6 +102,7 @@ if __name__ == "__main__":
     refresh_index(subparsers)
     make_dataset(subparsers)
     make_tokenizer(subparsers)
+    make_train_bin(subparsers)
 
     args = main_parser.parse_args()
     if hasattr(args, 'func'):
