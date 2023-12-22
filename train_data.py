@@ -4,6 +4,9 @@ import struct
 import numpy as np
 from tqdm import tqdm
 
+# random for shuffling the dataset
+import random
+random.seed(1)
 
 """ Another way of memory mapping
 import mmap
@@ -41,6 +44,8 @@ if os.path.exists(DATA_DIR):
     assert len(train_files) > 0, f"No training files in {DATA_DIR}"
 else:
     assert False, f"Directory {DATA_DIR} does not exist"
+
+train_files = random.shuffle(train_files)
 
 def make_train_bin(train_file=TRAIN_FILE, n=None):
     for file in tqdm(train_files[:n], "Making train.bin"):
