@@ -182,25 +182,28 @@ def batch_process(files: list[str]):
     else:
         processed_files = set()
 
+    # wrapped in try/except so that if you <C-c>, progress is stored
+    try:
+        for file in tqdm(files, "processing files"):
+            if file in processed_files:
+                continue
 
-    for file in tqdm(files, "processing files"):
-        if file in processed_files:
-            continue
+            try:
+                for n, track in enumerate(process_midi_file("./raw_data/" + file)):
+                    if track:
+                        name = f"./data/{file.split('/')[-1]}_{n}.txt"
 
-        try:
-            for n, track in enumerate(process_midi_file("./raw_data/" + file)):
-                if track:
-                    name = f"./data/{file.split('/')[-1]}_{n}.txt"
-
-                    with open(name, "w") as f:
-                        f.write(track.format())
-                else:
-                    continue
-        except:
-            with open('./cache/failed.txt', 'a') as f:
-                f.write(file + '\n')
+                        with open(name, "w") as f:
+                            f.write(track.format())
+                    else:
+                        continue
+            except:
+                with open('./cache/failed.txt', 'a') as f:
+                    f.write(file + '\n')
 
 
+            processed_files.add(file)
+    except:
         processed_files.add(file)
 
     with open(cache_file, 'w') as f:
