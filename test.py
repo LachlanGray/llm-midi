@@ -21,6 +21,10 @@ test_string = '''\
 '''
 
 def write_and_load_consistent():
+    '''
+    Encode the test string, write the binary, read the binary,
+    and check for consistency.
+    '''
     from tokenizer import encode
     from train_data import read_data
     import struct
@@ -86,11 +90,6 @@ def tokenizer():
     print(decoded)
 
     assert test_string == decoded
-
-def dataset():
-    from dataset import split_dataset
-    print(split_dataset)
-
 
 def debug_event_generation():
     import mido

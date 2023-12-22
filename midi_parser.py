@@ -2,13 +2,16 @@ import mido
 import os
 import hashlib
 import json
+from tqdm import tqdm
 # from calculate_bins import quantize_time, quantize_velocity
 
 """
-Converts midi files into a text format that can be tokenized like a language.
+Methods for translating raw midi files to a text-based format
 
-The one you care about is `batch_process()` which takes a list of paths to `.mid` 
-files in ./raw_data, and converts them to `.txt` files located in ./data.
+batch_process() takes a list of midi file paths, translates them,
+and writes them to ./data/
+
+It also caches which files have been processed in ./cache/processed.txt
 
 """
 
@@ -179,16 +182,10 @@ def batch_process(files: list[str]):
     else:
         processed_files = set()
 
-    n_files = len(files)
-    done = 0
 
-    for file in files:
+    for file in tqdm(files, "processing files"):
         if file in processed_files:
-            done += 1
             continue
-
-        print("\033c")
-        print(f"{done}/{n_files}")
 
         try:
             for n, track in enumerate(process_midi_file("./raw_data/" + file)):
@@ -205,7 +202,6 @@ def batch_process(files: list[str]):
 
 
         processed_files.add(file)
-        done += 1
 
     with open(cache_file, 'w') as f:
         f.write(json.dumps(list(processed_files)))

@@ -1,6 +1,10 @@
 import os
 import argparse
 
+"""
+Main CLI for the processing etc
+"""
+
 from preprocess_utils import save_index
 def refresh_index(subparsers):
     parser = subparsers.add_parser('refresh_index', help='Update catalogue')
@@ -16,7 +20,7 @@ def main_refresh_index(args):
         print('Index already exists')
         return
 
-    save_index('./cache')
+    save_index('./raw_data')
 
 
 from midi_parser import batch_process

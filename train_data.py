@@ -4,6 +4,31 @@ import struct
 import numpy as np
 from tqdm import tqdm
 
+
+""" Another way of memory mapping
+import mmap
+import os
+
+# Step 1: Create a file
+file_path = "example.dat"
+with open(file_path, "wb") as f:
+    f.write(b'\x00' * 1024)  # Write 1024 null bytes as placeholder
+
+# Step 2: Memory map the file
+with open(file_path, "r+b") as f:
+    mm = mmap.mmap(f.fileno(), 0)
+
+    # Step 3: Write to the memory-mapped file
+    mm[0:11] = b'Hello World'
+
+    # Read from the memory-mapped file
+    print(mm[:11])  # Output: b'Hello World'
+
+    # Step 5: Close the memory map and the file
+    mm.close()
+
+"""
+
 TRAIN_DIR = './train'
 TRAIN_FILE = os.path.join(TRAIN_DIR, 'train.bin')
 DATA_DIR = './data'
