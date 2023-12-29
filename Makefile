@@ -5,9 +5,9 @@ index:
 	# creates the index
 	python main.py refresh_index
 
-dataset-%:
+dataset:
 	# populate ./data n midi files at a time
-	python main.py make_dataset -n $*
+	python main.py make_dataset
 
 tokenizer:
 	# trains a tokenizer on every file in ./data/
@@ -23,4 +23,5 @@ test-%:
 delete-training-data:
 	rm ./cache/processed.txt
 	rm ./data/*
+	rm ./train.bin
 

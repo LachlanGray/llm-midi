@@ -27,7 +27,8 @@ from midi_parser import batch_process
 from preprocess_utils import read_index, get_processed
 def make_dataset(subparsers):
     parser = subparsers.add_parser('make_dataset', help='Make text dataset from midi dir')
-    parser.add_argument('-n', type=int, default=1000, help='Number of files to process')
+    # parser.add_argument('-n', type=int, default=1000, help='Number of files to process')
+    parser.add_argument('--limit', type=int, default=None, help='Specify a number of files to process')
 
     parser.set_defaults(func=main_make_dataset)
 
@@ -36,9 +37,9 @@ def main_make_dataset(args):
     processed = set(get_processed())
     files = files - processed
 
-    n = args.n
+    limit = args.limit
 
-    batch_process(list(files)[:n])
+    batch_process(list(files)[:limit])
 
 
 from tokenizers import Tokenizer as TokenizerFast

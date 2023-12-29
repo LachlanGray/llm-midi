@@ -1,3 +1,54 @@
+## Setup
+Dump a whole bunch of midi files into `/raw_data` in the project root. They can be inside nested folders. Make an index of all the files with
+```
+make index  
+```
+
+Then, to convert the midi files to a llm-friendly format do
+```
+make dataset
+```
+This will convert all the indexed midi files to a text format and store them as flat files in `./data`. One file is created for each track in a midi file.
+
+Once that's done, you can train a tokenizer on the files in `./data` with
+```
+make tokenizer
+```
+which will create `./cache/tokenizer.json`. Finally, you can initialize the actual training binary with 
+```
+make train-bin
+```
+which will create `train.bin`
+
+
+
+***
+Parse N midi files into text, and save to `./data`. I'm doing it like this right now because this part can be slow and interupting it will mess it up. The translated files will appear as `./data/file_n.txt` where `file` is the name of the midi file (excluding parent folders), and `n` is the track number from the file.
+```
+make dataset-N
+```
+
+A sequence of tokens can be read over one interval with `train_data.read_data(start, end)`. 
+
+
+Train the tokenizer on the translated files. It will train on all the files, should be fast.
+```
+make tokenizer
+```
+
+Assemble the translated text representations into a `train.bin`. It is located in `./train`, and each token is stored as 2 bytes.
+```
+make train-bin
+```
+
+
+## Tests
+```
+make test-name_of_test
+```
+where `name_of_test` is a function in `test.py`
+
+
 ## What is this
 I want to use language models to compose music by having them "speak" the [midi protocol](https://en.wikipedia.org/wiki/MIDI). This is how projects like [MuseNet](https://openai.com/research/musenet) work. Alas generative music still sounds really weird to me.
 
@@ -24,34 +75,4 @@ As a language, music's "grammar" is much less specific than spoken language, and
 
 Next step is to train something.
 
-
-## Setup
-Scan `./raw_data/` for midi files and cache their paths. You can dump midi files, and nested folders with midi files into here and they will be found.
-```
-make index  
-```
-
-Parse N midi files into text, and save to `./data`. I'm doing it like this right now because this part can be slow and interupting it will mess it up. The translated files will appear as `./data/file_n.txt` where `file` is the name of the midi file (excluding parent folders), and `n` is the track number from the file.
-```
-make dataset-N
-```
-
-Train the tokenizer on the translated files. It will train on all the files, should be fast.
-```
-make tokenizer
-```
-
-Assemble the translated text representations into a `train.bin`. It is located in `./train`, and each token is stored as 2 bytes.
-```
-make train-bin
-```
-
-A sequence of tokens can be read over one interval with `train_data.read_data(start, end)`. 
-
-
-## Tests
-```
-make test-name_of_test
-```
-where `name_of_test` is a function in `test.py`
 
