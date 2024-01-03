@@ -197,16 +197,15 @@ def batch_process(files: list[str]):
                             f.write(track.format())
                     else:
                         continue
-            except KeyboardInterrupt:
+            except :
                 with open('./cache/failed.txt', 'a') as f:
                     f.write(file + '\n')
 
-                print("Exiting; progress saved")
-
-
             processed_files.add(file)
-    except:
+
+    except KeyboardInterrupt:
         processed_files.add(file)
+        print("Exiting; progress saved")
 
     with open(cache_file, 'w') as f:
         f.write(json.dumps(list(processed_files)))
